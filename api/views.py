@@ -56,6 +56,7 @@ class NoteViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+
         return Note.objects.filter(user=self.request.user)
 
     def perform_create(self, serializer):
@@ -75,3 +76,4 @@ def register(request):
     
     user = User.objects.create_user(username=username, password=password)
     return Response({'message': 'User created successfully'}, status=status.HTTP_201_CREATED)        
+
