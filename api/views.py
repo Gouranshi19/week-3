@@ -62,6 +62,7 @@ class NoteViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
         
+        
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
