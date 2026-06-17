@@ -4,6 +4,7 @@ import Notes from "./pages/Notes";
 import Register from "./pages/Register";
 import ProtectedRoute from "./ProtectedRoute";
 import AddNote from "./pages/AddNote";
+import EditNote from "./pages/EditNote";
 
 function App() {
   return (
@@ -20,6 +21,11 @@ function App() {
         <Route path="/add-note" element={
           <ProtectedRoute>
               <AddNote />
+          </ProtectedRoute>
+      } />
+      <Route path="/edit-note" element={
+          <ProtectedRoute>
+              <EditNote />
           </ProtectedRoute>
       } />
       </Routes>

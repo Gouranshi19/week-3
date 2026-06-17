@@ -23,6 +23,19 @@ function Notes() {
         }
     };
 
+const handleDelete = async (id) => {
+    try {
+        const token = localStorage.getItem("access");
+        await axios.delete(
+            `http://127.0.0.1:8000/api/notes/${id}/`,
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
+        fetchNotes();
+    } catch (error) {
+        console.log(error);
+    }
+};
+
     const handleLogout = () => {
         localStorage.removeItem("access");
         localStorage.removeItem("refresh");
@@ -41,9 +54,18 @@ function Notes() {
             ) : (
                 notes.map((note) => (
                     <div key={note.id} style={{ border: "1px solid #ddd", borderRadius: "8px", padding: "16px", marginBottom: "12px", boxShadow: "0 2px 4px rgba(0,0,0,0.1)" }}>
-                        <h3 style={{ margin: "0 0 8px 0" }}>{note.title}</h3>
-                        <p style={{ margin: 0, color: "#555" }}>{note.content}</p>
-                    </div>
+    <h3 style={{ margin: "0 0 8px 0" }}>{note.title}</h3>
+    <p style={{ margin: 0, color: "#555" }}>{note.content}</p>
+        <div style={{ marginTop: "10px" }}>
+            <button onClick={() => handleDelete(note.id)} style={{ padding: "6px 12px", backgroundColor: "#f44336", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>
+                Delete
+            </button>
+            <button onClick={() => navigate("/edit-note", { state: note })} style={{ padding: "6px 12px", backgroundColor: "#2196F3", color: "white", border: "none", borderRadius: "4px", cursor: "pointer", marginRight: "8px" }}>
+    Edit
+</button>
+        </div>
+    </div>
+
                 ))
                 
             )}
