@@ -5,19 +5,22 @@ import axios from "axios";
 function Notes() {
     const [notes, setNotes] = useState([]);
     const navigate = useNavigate();
+    const [nextPage, setNextPage] = useState(null);
+    const [prevPage, setPrevPage] = useState(null);
 
     useEffect(() => {
         fetchNotes();
     }, []);
 
-    const fetchNotes = async () => {
+    const fetchNotes = async (url = "http://127.0.0.1:8000/api/notes/") => {
         try {
             const token = localStorage.getItem("access");
-            const response = await axios.get(
-                "http://127.0.0.1:8000/api/notes/",
+            const response = await axios.get(url,
                 { headers: { Authorization: `Bearer ${token}` } }
             );
-            setNotes(response.data);
+            setNotes(response.data.results);
+            setNextPage(response.data.next);
+            setPrevPage(response.data.previous);
         } catch (error) {
             console.log(error);
         }
@@ -77,7 +80,20 @@ const handleDelete = async (id) => {
                         Logout
                     </button>
                 </div>
+                    <div style={{ marginTop: "20px" }}>
+                    {prevPage && (
+                        <button onClick={() => fetchNotes(prevPage)} style={{ marginRight: "10px" }}>
+                            Previous
+                        </button>
+                    )}
+                    {nextPage && (
+                        <button onClick={() => fetchNotes(nextPage)}>
+                            Next
+                        </button>
+                    )}
+                </div>
         </div>
+        
     );
 }
 
